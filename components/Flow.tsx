@@ -15,6 +15,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
 import EvidenceNode from './EvidenceNode';
+import { BookOpenText, Database, FolderOpenDot, Goal, Play, Route } from 'lucide-react';
 
 
 const nodeTypes = {
@@ -26,38 +27,38 @@ const initNodes = [
   {
     id: '1',
     type: 'custom',
-    data: { name: 'G1', type: 'goal', description: 'Lorem ipsum testing description', emoji: '😎' },
+    data: { name: 'G1', type: 'goal', description: 'Lorem ipsum testing description', emoji: '😎', icon: <Goal /> },
     position: { x: 0, y: 50 },
   },
   {
     id: '2',
     type: 'custom',
-    data: { name: 'C1', type: 'context', description: 'Lorem ipsum testing description, Lorem ipsum testing description', emoji: '🤓' },
+    data: { name: 'C1', type: 'context', description: 'Lorem ipsum testing description, Lorem ipsum testing description', emoji: '🤓', icon: <BookOpenText /> },
 
     position: { x: -300, y: 200 },
   },
   {
     id: '3',
     type: 'custom',
-    data: { name: 'P1', type: 'project', description: 'Lorem ipsum testing description', emoji: '🤩' },
+    data: { name: 'P1', type: 'project', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <FolderOpenDot /> },
     position: { x: 0, y: 200 },
   },
   {
     id: '4',
     type: 'custom',
-    data: { name: 'S1', type: 'strategy', description: 'Lorem ipsum testing description', emoji: '🤩' },
+    data: { name: 'S1', type: 'strategy', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <Route /> },
     position: { x: 300, y: 200 },
   },
   {
     id: '5',
     type: 'evidence',
-    data: { name: 'E1', type: 'evidence', description: 'Lorem ipsum testing description', emoji: '🤩' },
+    data: { name: 'E1', type: 'evidence', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <Database /> },
     position: { x: -200, y: 350 },
   },
   {
     id: '6',
     type: 'evidence',
-    data: { name: 'E2', type: 'evidence', description: 'Lorem ipsum testing description', emoji: '🤩' },
+    data: { name: 'E2', type: 'evidence', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <Database /> },
     position: { x: 200, y: 350 },
   },
 ];
