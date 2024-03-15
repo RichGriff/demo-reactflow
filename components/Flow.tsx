@@ -16,12 +16,17 @@ import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
 import EvidenceNode from './EvidenceNode';
 import { BookOpenText, Database, FolderOpenDot, Goal, Play, Route } from 'lucide-react';
+import CustomEdge from './CustomEdge';
 
 
 const nodeTypes = {
   custom: CustomNode,
   evidence: EvidenceNode
 };
+
+const edgeTypes = {
+  'custom-edge': CustomEdge
+}
 
 const initNodes = [
   {
@@ -35,40 +40,40 @@ const initNodes = [
     type: 'custom',
     data: { name: 'C1', type: 'context', description: 'Lorem ipsum testing description, Lorem ipsum testing description', emoji: '🤓', icon: <BookOpenText /> },
 
-    position: { x: -300, y: 200 },
+    position: { x: -350, y: 50 },
   },
   {
     id: '3',
     type: 'custom',
     data: { name: 'P1', type: 'project', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <FolderOpenDot /> },
-    position: { x: 0, y: 200 },
+    position: { x: -200, y: 200 },
   },
   {
     id: '4',
     type: 'custom',
     data: { name: 'S1', type: 'strategy', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <Route /> },
-    position: { x: 300, y: 200 },
+    position: { x: 200, y: 200 },
   },
   {
     id: '5',
     type: 'evidence',
     data: { name: 'E1', type: 'evidence', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <Database /> },
-    position: { x: -200, y: 350 },
+    position: { x: -400, y: 350 },
   },
   {
     id: '6',
     type: 'evidence',
     data: { name: 'E2', type: 'evidence', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <Database /> },
-    position: { x: 200, y: 350 },
+    position: { x: 0, y: 350 },
   },
 ];
 
 const initEdges = [
-  {
-    id: 'e1-2',
-    source: '1',
-    target: '2',
-  },
+  // {
+  //   id: 'e1-2',
+  //   source: '1',
+  //   target: '2',
+  // },
   {
     id: 'e1-3',
     source: '1',
@@ -158,6 +163,7 @@ function Flow() {
         className='min-h-screen'
         fitView
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
       >
         <MiniMap />
         <Controls />

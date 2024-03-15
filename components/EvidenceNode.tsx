@@ -12,7 +12,7 @@ function EvidenceNode({ data }: any) {
           {data.icon}
         </div>
         <div className="ml-2 w-[200px]">
-          <div className="text-lg font-bold text-center">{data.name}</div>
+          <div className="text-lg font-bold">{data.name}</div>
           <div className="text-xs truncate">{data.description}</div>
         </div>
       </div>
