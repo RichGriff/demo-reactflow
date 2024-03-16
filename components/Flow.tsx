@@ -13,44 +13,47 @@ import ReactFlow, {
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
-import CustomNode from './CustomNode';
+import CustomNode from './PropertyNode';
 import EvidenceNode from './EvidenceNode';
 import { BookOpenText, Database, FolderOpenDot, Goal, Play, Route } from 'lucide-react';
-import CustomEdge from './CustomEdge';
+import ContextNode from './ContextNode';
+import PropertyNode from './PropertyNode';
+import GoalNode from './GoalNode';
+import StrategyNode from './StrategyNode';
+import NodeEdit from './common/NodeEdit';
 
 
 const nodeTypes = {
-  custom: CustomNode,
-  evidence: EvidenceNode
+  goal: GoalNode,
+  property: PropertyNode,
+  strategy: StrategyNode,
+  evidence: EvidenceNode,
+  context: ContextNode
 };
-
-const edgeTypes = {
-  'custom-edge': CustomEdge
-}
 
 const initNodes = [
   {
     id: '1',
-    type: 'custom',
+    type: 'goal',
     data: { name: 'G1', type: 'goal', description: 'Lorem ipsum testing description', emoji: '😎', icon: <Goal /> },
     position: { x: 0, y: 50 },
   },
   {
     id: '2',
-    type: 'custom',
+    type: 'context',
     data: { name: 'C1', type: 'context', description: 'Lorem ipsum testing description, Lorem ipsum testing description', emoji: '🤓', icon: <BookOpenText /> },
 
     position: { x: -350, y: 50 },
   },
   {
     id: '3',
-    type: 'custom',
-    data: { name: 'P1', type: 'project', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <FolderOpenDot /> },
+    type: 'property',
+    data: { name: 'P1', type: 'property', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <FolderOpenDot /> },
     position: { x: -200, y: 200 },
   },
   {
     id: '4',
-    type: 'custom',
+    type: 'strategy',
     data: { name: 'S1', type: 'strategy', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <Route /> },
     position: { x: 200, y: 200 },
   },
@@ -69,20 +72,24 @@ const initNodes = [
 ];
 
 const initEdges = [
-  // {
-  //   id: 'e1-2',
-  //   source: '1',
-  //   target: '2',
-  // },
+  {
+    id: 'e1-2',
+    source: '1',
+    target: '2',
+    animated: true,
+    sourceHandle: 'a'
+  },
   {
     id: 'e1-3',
     source: '1',
     target: '3',
+    sourceHandle: 'b'
   },
   {
     id: 'e1-4',
     source: '1',
     target: '4',
+    sourceHandle: 'b'
   },
   {
     id: 'e3-5',
@@ -99,63 +106,48 @@ const initEdges = [
 function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initEdges);
-  const [hidden, setHidden] = useState<boolean>(true);
+  const [editOpen, setEditOpen] = useState(false)
+  const [selectedNode, setSelectedNode] = useState<Node | any>(null)
 
-  const hide = (hidden:boolean , childEdgeID: any, childNodeID: any) => (nodeOrEdge: any) => {
-    if (
-      childEdgeID.includes(nodeOrEdge.id) ||
-      childNodeID.includes(nodeOrEdge.id)
-    )
-      nodeOrEdge.hidden = hidden;
-    return nodeOrEdge;
-  };
-
-  const checkTarget = (edge: any, id: number) => {
-    let edges = edge.filter((ed: any) => {
-      return ed.target !== id;
-    });
-    return edges;
-  };
-
-  let stack: any[] = []
-  let outgoers: any[] = [];
-  let connectedEdges: any[] = [];
   // const onConnect = useCallback((params: any ) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
   const handleNodeClick = (event: React.MouseEvent, node: Node | any) => {
-    let currentNodeID = node.id
-    stack.push(node)
-    while(stack.length > 0) {
-      let lastNode = stack.pop()
-      let childNode = getOutgoers(lastNode, nodes, edges)
-      let childEdge = checkTarget(getConnectedEdges([lastNode], edges), currentNodeID)
-      childNode.map((goer: any, key: any) => {
-        stack.push(goer)
-        outgoers.push(goer)
-      })
-      childEdge.map((edge: any, key: any) => {
-        connectedEdges.push(edge);
-      });
-    }
-
-    let childNodeID = outgoers.map((node) => {
-      return node.id;
-    });
-    let childEdgeID = connectedEdges.map((edge) => {
-      return edge.id;
-    });
-
-    setNodes((node) => node.map(hide(hidden, childEdgeID, childNodeID)));
-    setEdges((edge) => edge.map(hide(hidden, childEdgeID, childNodeID)));
-    setHidden(!hidden);
+    // let currentNodeID = node.id
+    // alert(`Selected ${currentNodeID}`)
+    // console.log(node.data)
+    setSelectedNode(node)
+    setEditOpen(true)
   }
+
+
+  // TODO: Toggle Function
+  // const [hidden, setHidden] = useState<boolean>(true);
+  // const hide = (hidden:boolean , childEdgeID: any, childNodeID: any) => (nodeOrEdge: any) => {
+  //   if (
+  //     childEdgeID.includes(nodeOrEdge.id) ||
+  //     childNodeID.includes(nodeOrEdge.id)
+  //   )
+  //     nodeOrEdge.hidden = hidden;
+  //   return nodeOrEdge;
+  // };
+  // const checkTarget = (edge: any, id: number) => {
+  //   let edges = edge.filter((ed: any) => {
+  //     return ed.target !== id;
+  //   });
+  //   return edges;
+  // };
+  // let stack: any[] = []
+  // let outgoers: any[] = [];
+  // let connectedEdges: any[] = [];
+  // const handleChildToggle = () => {
+  //   alert('toggle')
+  // }
 
   return (
     <div className='min-h-screen'>
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        //@ts-ignore
         onNodeClick={handleNodeClick}
         // onNodesChange={onNodesChange}
         // onEdgesChange={onEdgesChange}
@@ -163,12 +155,12 @@ function Flow() {
         className='min-h-screen'
         fitView
         nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
       >
         <MiniMap />
         <Controls />
         <Background />
       </ReactFlow>
+      <NodeEdit node={selectedNode} isOpen={editOpen} onClose={() => setEditOpen(false)} />
     </div>
   );
 }
