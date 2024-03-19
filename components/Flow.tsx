@@ -95,7 +95,8 @@ function Flow({ }: FlowProps) {
         nodeTypes={nodeTypes}
       >
         <MiniMap />
-        <Controls />
+        <Controls className='z-50' />
+        {/* <Controls className='inline-flex flex-col justify-start items-center !mb-16' /> */}
         <Background />
       </ReactFlow>
       {/* <div className='fixed bottom-0 left-0 justify-start items-center z-50 w-full h-28 bg-teal-100'>

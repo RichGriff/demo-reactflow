@@ -12,7 +12,7 @@ const ActionButtons = ({ }: ActionButtonProps) => {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="fixed bottom-4 left-0 w-full z-50 flex justify-center items-center">
+    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-40 flex justify-center items-center">
     <div className="w-1/8 m-auto bg-indigo-100 shadow-lg text-white py-2 px-4 flex justify-center items-center gap-2 rounded-full">
       <div className="pr-2 border-r-2 border-r-indigo-200 flex justify-center items-center gap-2">
         <button onClick={() => setOpen(true)} className="w-50 h-50 bg-indigo-700 hover:bg-indigo-800 transition-all rounded-full p-3"><Plus className='w-5 h-5' /></button>
