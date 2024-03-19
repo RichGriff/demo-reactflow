@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -9,7 +9,11 @@ import ReactFlow, {
   useEdgesState,
   addEdge,
   getConnectedEdges,
-  getOutgoers
+  getOutgoers,
+  Edge,
+  NodeProps,
+  NodeTypes,
+  OnNodesChange
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
@@ -21,91 +25,25 @@ import PropertyNode from './PropertyNode';
 import GoalNode from './GoalNode';
 import StrategyNode from './StrategyNode';
 import NodeEdit from './common/NodeEdit';
+import ActionButtons from './ActionButtons';
 
+import { shallow } from 'zustand/shallow';
+import useStore from '@/data/store';
 
-const nodeTypes = {
-  goal: GoalNode,
-  property: PropertyNode,
-  strategy: StrategyNode,
-  evidence: EvidenceNode,
-  context: ContextNode
-};
+interface FlowProps {
+}
 
-const initNodes = [
-  {
-    id: '1',
-    type: 'goal',
-    data: { name: 'G1', type: 'goal', description: 'Lorem ipsum testing description', emoji: '😎', icon: <Goal /> },
-    position: { x: 0, y: 50 },
-  },
-  {
-    id: '2',
-    type: 'context',
-    data: { name: 'C1', type: 'context', description: 'Lorem ipsum testing description, Lorem ipsum testing description', emoji: '🤓', icon: <BookOpenText /> },
+const selector = (state: any) => ({
+  nodes: state.nodes,
+  edges: state.edges,
+  nodeTypes: state.nodeTypes,
+  onNodesChange: state.onNodesChange,
+  onEdgesChange: state.onEdgesChange,
+  onConnect: state.onConnect,
+});
 
-    position: { x: -350, y: 50 },
-  },
-  {
-    id: '3',
-    type: 'property',
-    data: { name: 'P1', type: 'property', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <FolderOpenDot /> },
-    position: { x: -200, y: 200 },
-  },
-  {
-    id: '4',
-    type: 'strategy',
-    data: { name: 'S1', type: 'strategy', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <Route /> },
-    position: { x: 200, y: 200 },
-  },
-  {
-    id: '5',
-    type: 'evidence',
-    data: { name: 'E1', type: 'evidence', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <Database /> },
-    position: { x: -400, y: 350 },
-  },
-  {
-    id: '6',
-    type: 'evidence',
-    data: { name: 'E2', type: 'evidence', description: 'Lorem ipsum testing description', emoji: '🤩', icon: <Database /> },
-    position: { x: 0, y: 350 },
-  },
-];
-
-const initEdges = [
-  {
-    id: 'e1-2',
-    source: '1',
-    target: '2',
-    animated: true,
-    sourceHandle: 'a'
-  },
-  {
-    id: 'e1-3',
-    source: '1',
-    target: '3',
-    sourceHandle: 'b'
-  },
-  {
-    id: 'e1-4',
-    source: '1',
-    target: '4',
-    sourceHandle: 'b'
-  },
-  {
-    id: 'e3-5',
-    source: '3',
-    target: '5',
-  },
-  {
-    id: 'e3-6',
-    source: '3',
-    target: '6',
-  },
-];
-
-function Flow() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initEdges);
+function Flow({ }: FlowProps) {
+  const { nodes, edges, nodeTypes, onNodesChange, onEdgesChange, onConnect } = useStore(selector, shallow);
   const [editOpen, setEditOpen] = useState(false)
   const [selectedNode, setSelectedNode] = useState<Node | any>(null)
 
@@ -160,6 +98,10 @@ function Flow() {
         <Controls />
         <Background />
       </ReactFlow>
+      {/* <div className='fixed bottom-0 left-0 justify-start items-center z-50 w-full h-28 bg-teal-100'>
+        <Update nodeName={nodeName} setNodeName={setNodeName} />
+      </div> */}
+      <ActionButtons />
       <NodeEdit node={selectedNode} isOpen={editOpen} onClose={() => setEditOpen(false)} />
     </div>
   );

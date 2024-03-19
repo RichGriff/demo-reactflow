@@ -14,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Textarea } from "../ui/textarea"
 import { Button } from '../ui/button'
+import { Goal } from 'lucide-react'
 import { shallow } from 'zustand/shallow';
 import useStore from '@/data/store';
 
@@ -26,8 +27,8 @@ const formSchema = z.object({
   })
 })
 
-interface EditFormProps {
-  node: any;
+interface CreateFormProps {
+  onClose: () => void
 };
 
 const selector = (state: any) => ({
@@ -35,15 +36,14 @@ const selector = (state: any) => ({
   setNodes: state.setNodes
 });
 
-const EditForm: React.FC<EditFormProps> = ({
-  node
-}) => {
+const CreateForm: React.FC<CreateFormProps> = ({ onClose }) => {
   const { nodes, setNodes } = useStore(selector, shallow);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: node.data || {
+    defaultValues: {
       name: '',
+      description: ''
     }
   });
 
@@ -52,27 +52,21 @@ const EditForm: React.FC<EditFormProps> = ({
     // ✅ This will be type-safe and validated.
     console.log(values)
 
-    const nodeIndex = nodes.findIndex((n: any) => n.id === node.id);
-    if (nodeIndex !== -1) {
-      // Make a copy of the nodes array to avoid mutating state directly
-      const updatedNodes = [...nodes];
-
-      // Make changes to the node (for example, updating its data)
-      updatedNodes[nodeIndex] = {
-        ...updatedNodes[nodeIndex], // Copy the existing node properties
-        data: {
-          ...updatedNodes[nodeIndex].data, // Copy the existing node data properties
-          // Update the specific property you want to change
-          // For example:
-          name: values.name,
-          description: values.description
-        }
-      };
-
-      // Update the nodes state in the store with the modified node
-      setNodes(updatedNodes);
+    const newGoal: any = {
+      id: crypto.randomUUID(),
+      type: 'goal',
+      data: { 
+        name: values.name, 
+        type: 'goal', 
+        description: values.description, 
+        icon: <Goal /> 
+      },
+      position: { x: 400, y: 50 },
     }
 
+    const updatedNodes = [...nodes, newGoal]
+    setNodes(updatedNodes)
+    onClose()
   }
 
   return (
@@ -105,11 +99,11 @@ const EditForm: React.FC<EditFormProps> = ({
           )}
         />
         <div className='flex justify-start items-center gap-3'>
-          <Button type="submit" className="bg-indigo-500 hover:bg-indigo-600">Update&nbsp;<span className='capitalize'>{node.type}</span></Button>
+          <Button type="submit" className="bg-indigo-500 hover:bg-indigo-600">Create Goal</Button>
         </div>
       </form>
     </Form>
   )
 }
 
-export default EditForm
+export default CreateForm
