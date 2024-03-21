@@ -3,9 +3,10 @@
 import { ArrowDown, ChevronDown } from 'lucide-react';
 import React, { memo, useState } from 'react';
 import { Handle, NodeProps, Position, getConnectedEdges, getOutgoers } from 'reactflow';
+import ToggleButton from './ToggleButton';
 
 function GoalNode({ data, ...props }: NodeProps) {
-  const [hidden, setHidden] = useState<boolean>(true);
+  const [hidden, setHidden] = useState<boolean>(true)
 
   return (
     <div className={`px-4 py-2 shadow-md rounded-md bg-slate-900 text-white`}>
@@ -18,7 +19,7 @@ function GoalNode({ data, ...props }: NodeProps) {
           <div className="text-lg font-bold">{data.name}</div>
           <div className="text-xs truncate">{data.description}</div>
         </div>
-        <button onClick={() => alert('show/hide')}><ChevronDown size={16}/></button>
+        <ToggleButton node={props}/>
       </div>
 
       <Handle type="target" position={Position.Top} />

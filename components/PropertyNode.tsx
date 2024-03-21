@@ -2,9 +2,10 @@
 
 import { ChevronDown } from 'lucide-react';
 import React, { memo } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, NodeProps, NodeTypes, Position } from 'reactflow';
+import ToggleButton from './ToggleButton';
 
-function PropertyNode({ data }: any) {
+function PropertyNode({ data, ...props}: NodeProps) {
   return (
     <div className={`px-4 py-2 shadow-md rounded-md bg-indigo-500 text-white`}>
       <div className="flex">
@@ -16,7 +17,7 @@ function PropertyNode({ data }: any) {
           <div className="text-lg font-bold">{data.name}</div>
           <div className="text-xs truncate">{data.description}</div>
         </div>
-        <button onClick={() => alert('show/hide')}><ChevronDown size={16}/></button>
+        <ToggleButton node={props}/>
       </div>
 
       <Handle type="target" position={Position.Top} />

@@ -8,28 +8,33 @@ export const initEdges = [
     source: '1',
     target: '2',
     animated: true,
-    sourceHandle: 'a'
+    sourceHandle: 'a',
+    hidden: false
   },
   {
     id: 'e1-3',
     source: '1',
     target: '3',
-    sourceHandle: 'b'
+    sourceHandle: 'b',
+    hidden: false
   },
   {
     id: 'e1-4',
     source: '1',
     target: '4',
-    sourceHandle: 'b'
+    sourceHandle: 'b',
+    hidden: false
   },
   {
     id: 'e3-5',
     source: '3',
     target: '5',
+    hidden: false
   },
   {
     id: 'e3-6',
     source: '3',
     target: '6',
+    hidden: false
   },
 ] as Edge[];
